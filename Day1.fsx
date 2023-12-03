@@ -6,7 +6,6 @@ open System
 
 let input = loadInputFile 1
 
-let isDigit (c: char) = c >= '0' && c <= '9'
 
 let folder (characters: char[]) (character: char) =
     if isDigit character then
