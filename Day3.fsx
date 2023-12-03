@@ -104,49 +104,48 @@ let rec parseRow rowIndex columnIndex (schema: EngineSchema) (row: string) =
     else
         schema'
 
-let getNeighbourCoordinates (coordinate: Coordinate) =
-    [|
-            // LEFT
-            {
-                X = coordinate.X - 1
-                Y = coordinate.Y
-            }
-            // RIGHT
-            {
-                X = coordinate.X + 1
-                Y = coordinate.Y
-            }
-            // Bottom
-            {
-                X = coordinate.X
-                Y = coordinate.Y - 1
-            }
-            // Bottom left
-            {
-                X = coordinate.X - 1
-                Y = coordinate.Y + 1
-            }
-            // Bottom right
-            {
-                X = coordinate.X + 1
-                Y = coordinate.Y - 1
-            }
-            // Top
-            {
-                X = coordinate.X
-                Y = coordinate.Y + 1
-            }
-            // TOP LEFT
-            {
-                X = coordinate.X - 1
-                Y = coordinate.Y - 1
-            }
-            // TOP RIGHT
-            {
-                X = coordinate.X + 1
-                Y = coordinate.Y + 1
-            }
-        |]
+let getNeighbourCoordinates (coordinate: Coordinate) = [|
+    // LEFT
+    {
+        X = coordinate.X - 1
+        Y = coordinate.Y
+    }
+    // RIGHT
+    {
+        X = coordinate.X + 1
+        Y = coordinate.Y
+    }
+    // Bottom
+    {
+        X = coordinate.X
+        Y = coordinate.Y - 1
+    }
+    // Bottom left
+    {
+        X = coordinate.X - 1
+        Y = coordinate.Y + 1
+    }
+    // Bottom right
+    {
+        X = coordinate.X + 1
+        Y = coordinate.Y - 1
+    }
+    // Top
+    {
+        X = coordinate.X
+        Y = coordinate.Y + 1
+    }
+    // TOP LEFT
+    {
+        X = coordinate.X - 1
+        Y = coordinate.Y - 1
+    }
+    // TOP RIGHT
+    {
+        X = coordinate.X + 1
+        Y = coordinate.Y + 1
+    }
+|]
 
 let getPartNeighbours (part: EnginePart) =
     let partCoordinates = part.Coordinates |> Set.ofArray
@@ -205,6 +204,7 @@ let getGears (coordinate: Coordinate) (parts: EnginePart[]) =
         |> Array.filter snd
         |> Array.map fst
         |> Array.map (fun i -> parts[i])
+
     if neighbourParts.Length = 2 then
         {
             Coordinate = coordinate
@@ -214,28 +214,21 @@ let getGears (coordinate: Coordinate) (parts: EnginePart[]) =
     else
         [||]
 
-let gearRatio (gear: Gear)=
+let gearRatio (gear: Gear) =
     let part1, part2 = gear.Part
     part1.Value * part2.Value
 
 let calculateGears (schema: EngineSchema) =
     let gearParts = getGearParts schema
-    let gears = gearParts |> Array.map (fun x -> getGears x.Coordinate schema.Parts) |> Array.concat
+
+    let gears =
+        gearParts
+        |> Array.map (fun x -> getGears x.Coordinate schema.Parts)
+        |> Array.concat
+
     gears |> Array.map gearRatio |> Array.sum
-
-let testSchema =
-    testInput |> parseEngineSchema
-let testResult =
-    testSchema |> filterParts |> _.Parts |> Array.sumBy _.Value
-
-let test2Result =
-    testSchema |> calculateGears
-let gearSymbols = getGearParts testSchema
-let gearSymbol = gearSymbols[0]
-getGears gearSymbol.Coordinate testSchema.Parts |> Array.map gearRatio |> Array.sum
 
 let part1Result =
     input |> parseEngineSchema |> filterParts |> _.Parts |> Array.sumBy _.Value
 
-let part2Result =
-    input |> parseEngineSchema |> calculateGears
+let part2Result = input |> parseEngineSchema |> calculateGears
