@@ -5,3 +5,5 @@ let loadInputFile (day: int) =
     System.IO.File.ReadAllLines(path)
 
 let isDigit (c: char) = System.Char.IsDigit(c)
+
+let charToInt (c: char) = int(c) - int('0')

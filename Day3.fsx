@@ -1,4 +1,5 @@
 #load "Helpers.fsx"
+#time "on"
 
 open System
 open Helpers
@@ -18,7 +19,7 @@ let testInput = [|
 
 let input = loadInputFile 3
 
-
+[<Struct>]
 type Coordinate = { X: int; Y: int }
 
 type EnginePart = {
@@ -43,7 +44,12 @@ let emptyEngineSchema = { Symbols = [||]; Parts = [||] }
 
 let isSymbol (c: char) = c <> '.' && not (isDigit c)
 
-let rec parseRow rowIndex columnIndex (schema: EngineSchema) (row: string) =
+let rec parseRowInner
+    rowIndex
+    columnIndex
+    (schema: EngineSchema)
+    (row: char[])
+    =
     let firstChar = row[0]
 
     let schema', rest, nextColumnIndex =
@@ -59,11 +65,11 @@ let rec parseRow rowIndex columnIndex (schema: EngineSchema) (row: string) =
                 schema with
                     Symbols = Array.append schema.Symbols [| symbol |]
             },
-            row.Substring(1),
+            row[1..],
             columnIndex + 1
 
         else if firstChar |> isDigit then
-            let digits = row |> Array.ofSeq |> Array.takeWhile isDigit
+            let digits = row |> Array.takeWhile isDigit
 
             let coordinates =
                 digits
@@ -73,11 +79,11 @@ let rec parseRow rowIndex columnIndex (schema: EngineSchema) (row: string) =
                 digits
                 |> Array.rev
                 |> Array.mapi (fun i c ->
-                    let digit = Int32.Parse(string c)
+                    let digit = c |> charToInt
                     digit * (int32 (Math.Pow(10.0, float i))))
                 |> Array.sum
 
-            let rest = row.Substring(digits.Length)
+            let rest = row[digits.Length ..]
 
             {
                 schema with
@@ -92,15 +98,15 @@ let rec parseRow rowIndex columnIndex (schema: EngineSchema) (row: string) =
             rest,
             columnIndex + digits.Length
         else
-            let dots = row |> Array.ofSeq |> Array.takeWhile (fun c -> c = '.')
-            let rest = row.Substring(dots.Length)
+            let dots = row |> Array.takeWhile (fun c -> c = '.')
+            let rest = row[dots.Length ..]
             let nextColumnIndex = columnIndex + dots.Length
 
             schema, rest, nextColumnIndex
 
     if rest.Length > 0 then
 
-        parseRow rowIndex nextColumnIndex schema' rest
+        parseRowInner rowIndex nextColumnIndex schema' rest
     else
         schema'
 
@@ -148,7 +154,7 @@ let getNeighbourCoordinates (coordinate: Coordinate) = [|
 |]
 
 let getPartNeighbours (part: EnginePart) =
-    let partCoordinates = part.Coordinates |> Set.ofArray
+    // let partCoordinates = part.Coordinates |> Set.ofArray
 
     let neighbours =
         part.Coordinates
@@ -173,8 +179,12 @@ let getNeighbourSymbolCoordinates (symbols: Symbol[]) (part: EnginePart) =
     Set.intersect possibleCoordinates symbolsCoordinatesSet
 
 let parseEngineSchema (schema: string[]) =
-    schema
-    |> Array.mapi (fun rowIndex -> parseRow rowIndex 0 emptyEngineSchema)
+    let parsedSchema =
+        schema
+        |> Array.mapi (fun rowIndex row ->
+            row.ToCharArray() |> parseRowInner rowIndex 0 emptyEngineSchema)
+
+    parsedSchema
     |> Array.reduce (fun a b -> {
         Symbols = Array.append a.Symbols b.Symbols
         Parts = Array.append a.Parts b.Parts
@@ -195,7 +205,7 @@ let filterParts (parsedSchema: EngineSchema) =
     }
 
 let getGearParts (schema: EngineSchema) =
-    schema.Symbols |> Array.filter (fun x -> x.IsGear)
+    schema.Symbols |> Array.filter _.IsGear
 
 let getGears (coordinate: Coordinate) (parts: EnginePart[]) =
     let neighbourParts =
@@ -228,7 +238,7 @@ let calculateGears (schema: EngineSchema) =
 
     gears |> Array.map gearRatio |> Array.sum
 
-let part1Result =
-    input |> parseEngineSchema |> filterParts |> _.Parts |> Array.sumBy _.Value
+let schema = parseEngineSchema input
+let part1Result = schema |> filterParts |> _.Parts |> Array.sumBy _.Value
 
-let part2Result = input |> parseEngineSchema |> calculateGears
+let part2Result = schema |> calculateGears
