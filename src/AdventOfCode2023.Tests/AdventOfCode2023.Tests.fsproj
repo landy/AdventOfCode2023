@@ -7,7 +7,8 @@
     <ItemGroup>
         <Compile Include="Day5.Tests.fs"/>
         <Compile Include="Day6.Tests.fs"/>
-        <Compile Include="Day7.Tests.fs" />
+        <Compile Include="Day7.Tests.fs"/>
+        <Content Include="paket.references"/>
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\AdventOfCode2023\AdventOfCode2023.fsproj"/>

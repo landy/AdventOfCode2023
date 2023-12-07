@@ -2,3 +2,4 @@ FsUnit
 NUnit
 NUnit3TestAdapter
 FSharp.Core
+Microsoft.NET.Test.Sdk

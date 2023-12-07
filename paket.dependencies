@@ -5,3 +5,4 @@ nuget FSharp.Core
 nuget FsUnit 5.6.1
 nuget NUnit 3.14.0
 nuget NUnit3TestAdapter 4.5.0
+nuget Microsoft.NET.Test.Sdk
