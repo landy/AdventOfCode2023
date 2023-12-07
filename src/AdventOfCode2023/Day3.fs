@@ -1,8 +1,6 @@
-#load "Helpers.fsx"
-#time "on"
+module AdventOfCode2023.Day3
 
 open System
-open Helpers
 
 let testInput = [|
     "467..114.."

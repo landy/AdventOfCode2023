@@ -1,8 +1,7 @@
-#load "Helpers.fsx"
-
-open Helpers
+module AdventOfCode2023.Day1
 
 open System
+
 
 let input = loadInputFile 1
 
@@ -14,8 +13,10 @@ let folder (characters: char[]) (character: char) =
         characters
 
 let arrayToNumber (characters: char[]) =
-    let numberArray =
-        [| (characters |> Array.head); (characters |> Array.last) |]
+    let numberArray = [|
+        (characters |> Array.head)
+        (characters |> Array.last)
+    |]
 
     String.Concat(numberArray) |> Int32.Parse
 
@@ -32,16 +33,17 @@ let startsWith (parser: string * int) (text: string) =
     if isMatch then Some(value) else None
 
 let parseTextNumber (text: string) =
-    let representations =
-        [ "one", 1
-          "two", 2
-          "three", 3
-          "four", 4
-          "five", 5
-          "six", 6
-          "seven", 7
-          "eight", 8
-          "nine", 9 ]
+    let representations = [
+        "one", 1
+        "two", 2
+        "three", 3
+        "four", 4
+        "five", 5
+        "six", 6
+        "seven", 7
+        "eight", 8
+        "nine", 9
+    ]
 
     let result =
         representations

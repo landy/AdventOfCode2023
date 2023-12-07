@@ -1,8 +1,6 @@
-#load "Helpers.fsx"
-#time "on"
+module AdventOfCode2023.Day4
 
 open System
-open Helpers
 
 let testInput = [|
     "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53"
@@ -42,19 +40,22 @@ let calculateAllWinningCounts (input: string[]) =
 
 let calculateTotalCountOfCards (cards: int[]) =
     let counts = Array.init cards.Length (fun _ -> 1)
-    for index in [0 .. cards.Length - 1] do
+
+    for index in [ 0 .. cards.Length - 1 ] do
         let winning = cards[index]
         let count = counts[index]
-        for j in [1 .. winning] do
+
+        for j in [ 1..winning ] do
             let updateIndex = index + j
+
             if updateIndex < cards.Length then
                 counts[updateIndex] <- counts[updateIndex] + count
+
     counts
 
 let part2 (input: string[]) =
     let winningCounts = calculateAllWinningCounts input
-    calculateTotalCountOfCards winningCounts
-    |> Array.sum
+    calculateTotalCountOfCards winningCounts |> Array.sum
 
 let input = loadInputFile 4
 part1 testInput |> printfn "Test 1: %A"

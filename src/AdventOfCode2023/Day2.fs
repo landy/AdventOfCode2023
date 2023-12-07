@@ -1,7 +1,6 @@
-#load "Helpers.fsx"
+module AdventOfCode2023.Day2
 
 open System
-open Helpers
 
 let testInput = [|
     "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
@@ -17,59 +16,64 @@ type DiceColor =
     | Red
     | Green
     | Blue
-    
-type Dice =
-    {
-        Color: DiceColor
-        Count: int
-    }
-    
-type Round = Dice []
 
-type Game = {
-    Id: int
-    Rounds: Round []
-}
+type Dice = { Color: DiceColor; Count: int }
 
-let parseGameId  (game: string) =
+type Round = Dice[]
+
+type Game = { Id: int; Rounds: Round[] }
+
+let parseGameId (game: string) =
     let colonIndex = game.IndexOf(':')
-    game[5..(colonIndex - 1)] |> int
+    game[5 .. (colonIndex - 1)] |> int
 
 let splitRounds (game: string) =
     let colonIndex = game.IndexOf(':')
-    game[(colonIndex + 2)..].Split(';', StringSplitOptions.TrimEntries)
+
+    game[(colonIndex + 2) ..].Split(';', StringSplitOptions.TrimEntries)
     |> Array.map _.Split(',', StringSplitOptions.TrimEntries)
 
 let parseColor (count: int) (color: string) =
     match color with
     | "red" -> { Color = DiceColor.Red; Count = count } |> Some
-    | "green" -> { Color = DiceColor.Green; Count = count } |> Some
-    | "blue" -> { Color = DiceColor.Blue; Count = count } |> Some
+    | "green" ->
+        {
+            Color = DiceColor.Green
+            Count = count
+        }
+        |> Some
+    | "blue" ->
+        {
+            Color = DiceColor.Blue
+            Count = count
+        }
+        |> Some
     | _ -> None
-    
+
 let parseDice (round: string) =
     let dice = round.Split(' ')
     let count = int (dice[0].Trim())
     dice[1] |> parseColor count
-    
+
 let parseGame (game: string) =
     let gameId = parseGameId game
+
     let rounds =
         splitRounds game
         |> Array.map (fun round ->
-            round |> Array.map parseDice |> Array.choose id
-        )
+            round |> Array.map parseDice |> Array.choose id)
+
     { Id = gameId; Rounds = rounds }
-    
+
 let isInvalidGame (game: Game) =
-    game.Rounds |> Array.exists (fun round ->
-        round |> Array.exists (fun dice ->
+    game.Rounds
+    |> Array.exists (fun round ->
+        round
+        |> Array.exists (fun dice ->
             match dice with
             | { Color = DiceColor.Red } -> dice.Count > 12
             | { Color = DiceColor.Green } -> dice.Count > 13
-            | { Color = DiceColor.Blue } -> dice.Count > 14
-        )
-    )
+            | { Color = DiceColor.Blue } -> dice.Count > 14))
 
 let isValidGame = not << isInvalidGame
 
@@ -78,16 +82,13 @@ let countMinimums (game: Game) =
     |> Array.collect id
     |> Array.groupBy _.Color
     |> Array.map (fun (_, dices) ->
-        dices
-        |> Array.maxBy (fun dice -> dice.Count)
-    )
-let calculatePower (dices: Dice []) =
+        dices |> Array.maxBy (fun dice -> dice.Count))
+
+let calculatePower (dices: Dice[]) =
     dices |> Array.map _.Count |> Array.reduce (*)
+
 let result1 =
-    input
-    |> Array.map parseGame
-    |> Array.filter isValidGame
-    |> Array.sumBy _.Id
+    input |> Array.map parseGame |> Array.filter isValidGame |> Array.sumBy _.Id
 
 let result2 =
     input

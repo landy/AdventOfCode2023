@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{83032FAA-B706-4689-93DD-433CA1CCC3D5}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D12EE170-378B-4916-BF39-A9772D237229}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AdventOfCode2023", "src\AdventOfCode2023\AdventOfCode2023.fsproj", "{DCE8ADA6-303E-4EE2-A004-2CDD31D54908}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AdventOfCode2023.Tests", "src\AdventOfCode2023.Tests\AdventOfCode2023.Tests.fsproj", "{40BCCB94-7AA5-472A-9EB9-E777416CDF23}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{3B9D734E-09D9-4F41-AE25-022D860CFDB0}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		paket.dependencies = paket.dependencies
+		paket.lock = paket.lock
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCE8ADA6-303E-4EE2-A004-2CDD31D54908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE8ADA6-303E-4EE2-A004-2CDD31D54908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE8ADA6-303E-4EE2-A004-2CDD31D54908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE8ADA6-303E-4EE2-A004-2CDD31D54908}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40BCCB94-7AA5-472A-9EB9-E777416CDF23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40BCCB94-7AA5-472A-9EB9-E777416CDF23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40BCCB94-7AA5-472A-9EB9-E777416CDF23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40BCCB94-7AA5-472A-9EB9-E777416CDF23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DCE8ADA6-303E-4EE2-A004-2CDD31D54908} = {D12EE170-378B-4916-BF39-A9772D237229}
+		{40BCCB94-7AA5-472A-9EB9-E777416CDF23} = {D12EE170-378B-4916-BF39-A9772D237229}
+	EndGlobalSection
+EndGlobal

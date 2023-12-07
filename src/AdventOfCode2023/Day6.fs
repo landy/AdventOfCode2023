@@ -1,7 +1,5 @@
-#load "Helpers.fsx"
-#time "on"
+module AdventOfCode2023.Day6
 
-open Helpers
 open System
 
 let input = loadInputFile 6
@@ -12,7 +10,7 @@ let calculateRaceResult holdDuration neededDistance maximumDuration =
     racingDistance > neededDistance
 
 let calculateWinningScenarios (neededDistance: int64) (maximumDuration: int64) =
-    [| 1L..maximumDuration |]
+    [| 1L .. maximumDuration |]
     |> Array.Parallel.filter (fun holdDuration ->
         calculateRaceResult holdDuration neededDistance maximumDuration)
     |> Array.length
