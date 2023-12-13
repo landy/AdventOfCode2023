@@ -11,6 +11,7 @@
         <Compile Include="Day8.Tests.fs"/>
         <Compile Include="Day9.Tests.fs"/>
         <Compile Include="Day10.Tests.fs"/>
+        <Compile Include="Day11.Tests.fs"/>
         <Content Include="paket.references"/>
     </ItemGroup>
     <ItemGroup>
